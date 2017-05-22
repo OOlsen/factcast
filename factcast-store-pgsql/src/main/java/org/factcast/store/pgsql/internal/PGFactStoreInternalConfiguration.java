@@ -28,7 +28,7 @@ import com.impossibl.postgres.jdbc.PGDriver;
  */
 @Configuration
 @EnableScheduling
-@Import({SchedulingConfiguration.class,JdbcUrlProviderConfiguration.class})
+@Import({ SchedulingConfiguration.class, JdbcUrlProviderConfiguration.class })
 public class PGFactStoreInternalConfiguration {
     static {
         final String DRIVER_PROPERTY = "spring.datasource.driverClassName";
@@ -56,7 +56,8 @@ public class PGFactStoreInternalConfiguration {
     }
 
     @Bean
-    public EnvironmentPGConnectionSupplier environmentPGConnectionSupplier(JdbcUrlProvider urlProvider) {
+    public EnvironmentPGConnectionSupplier environmentPGConnectionSupplier(
+            JdbcUrlProvider urlProvider) {
         return new EnvironmentPGConnectionSupplier(urlProvider);
     }
 
@@ -85,10 +86,10 @@ public class PGFactStoreInternalConfiguration {
 
     @Bean
     @Primary
-    public javax.sql.DataSource datasource(EnvironmentPGConnectionSupplier env) {
+    public javax.sql.DataSource datasource(JdbcUrlProvider urlProvider) {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
         PoolProperties p = new PoolProperties();
-        p.setUrl(env.url());
+        p.setUrl(urlProvider.provide());
         p.setDriverClassName(PGDriver.class.getCanonicalName());
         p.setInitialSize(32);
         p.setJmxEnabled(false);
