@@ -28,7 +28,7 @@ import com.impossibl.postgres.jdbc.PGDriver;
  */
 @Configuration
 @EnableScheduling
-@Import(SchedulingConfiguration.class)
+@Import({SchedulingConfiguration.class,JdbcUrlProviderConfiguration.class})
 public class PGFactStoreInternalConfiguration {
     static {
         final String DRIVER_PROPERTY = "spring.datasource.driverClassName";
@@ -56,8 +56,8 @@ public class PGFactStoreInternalConfiguration {
     }
 
     @Bean
-    public EnvironmentPGConnectionSupplier environmentPGConnectionSupplier() {
-        return new EnvironmentPGConnectionSupplier();
+    public EnvironmentPGConnectionSupplier environmentPGConnectionSupplier(JdbcUrlProvider urlProvider) {
+        return new EnvironmentPGConnectionSupplier(urlProvider);
     }
 
     @Bean

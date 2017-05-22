@@ -1,7 +1,8 @@
 package org.factcast.store.pgsql.internal;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.google.common.base.Supplier;
@@ -17,14 +18,15 @@ import lombok.SneakyThrows;
  *
  */
 class EnvironmentPGConnectionSupplier implements Supplier<PGConnection>, InitializingBean {
-    @Getter
-    String url;
-
+    
     DriverManagerDataSource dataSource;
+    
+    @Getter
+    private final String url;
 
-    @Value("${spring.datasource.url}")
-    public void setUrl(String url) {
-        this.url = url;
+    @Inject
+    public EnvironmentPGConnectionSupplier(JdbcUrlProvider urlprovider) {
+        this.url=urlprovider.provide();
     }
 
     @Override
