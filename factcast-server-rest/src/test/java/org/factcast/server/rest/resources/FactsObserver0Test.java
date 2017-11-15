@@ -167,12 +167,12 @@ public class FactsObserver0Test {
 
         assertEquals("keep-alive", value.getName());
     }
-    
+
     @Test
-    public void unsubscribe() throws Exception{
-       
+    public void unsubscribe() throws Exception {
+
         uut.unsubscribe();
-        
+
         verify(subscription).close();
         verify(eventOutput).close();
     }
