@@ -1,9 +1,11 @@
 package org.factcast.server.rest.resources;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -61,7 +63,21 @@ public class ConnectionCleanupTimerTest {
 
         verifyNoMoreInteractions(observer);
 
-        verifyZeroInteractions(timer);
+        verify(timer, never()).cancel();
+
+    }
+
+    @SuppressWarnings("boxing")
+    @Test
+    public void test_schedule() {
+        // given
+        when(observer.isConnectionAlive()).thenReturn(true);
+
+        // when
+        uut.start();
+
+        // then
+        verify(timer).schedule(any(), eq(10L), eq(100L));
 
     }
 

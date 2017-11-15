@@ -34,7 +34,7 @@ public class ConnectionCleanupTimer {
 
             }
         };
-        new Timer(true).schedule(task, delay.toMillis(), period.toMillis());
+        timer.schedule(task, delay.toMillis(), period.toMillis());
 
     }
 
