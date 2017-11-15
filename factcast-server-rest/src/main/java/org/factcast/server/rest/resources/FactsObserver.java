@@ -155,10 +155,19 @@ public class FactsObserver implements FactObserver {
     private void unsubscribeAndLog(Throwable e) {
         try {
             subcription.get().close();
-            eventOutput.close();
+
         } catch (Exception e1) {
 
+        } finally {
+
+            try {
+                eventOutput.close();
+            } catch (IOException ioExc) {
+
+                log.error("unable to close event output", ioExc);
+            }
         }
+
         // debug level, because error occurs always, if client disappears
         log.debug("Error while writing into the pipe", e);
     }
